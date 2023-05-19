@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,11 +21,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SignServiceTest {
     private final SignService signService;
     private final MemberRepository memberRepository;
+    private final PasswordEncoder encoder;
 
     @Autowired
-    SignServiceTest(SignService signService, MemberRepository memberRepository) {
+    SignServiceTest(SignService signService, MemberRepository memberRepository, PasswordEncoder encoder) {
         this.signService = signService;
         this.memberRepository = memberRepository;
+        this.encoder = encoder;
     }
 
     @BeforeEach
@@ -65,7 +68,7 @@ class SignServiceTest {
         // given
         memberRepository.save(Member.builder()
                 .account("colabear754")
-                .password("1234")
+                .password(encoder.encode("1234"))
                 .name("콜라곰")
                 .type(MemberType.USER)
                 .build());

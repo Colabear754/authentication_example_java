@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,11 +25,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class MemberServiceTest {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private final PasswordEncoder encoder;
 
     @Autowired
-    MemberServiceTest(MemberService memberService, MemberRepository memberRepository) {
+    MemberServiceTest(MemberService memberService, MemberRepository memberRepository, PasswordEncoder encoder) {
         this.memberService = memberService;
         this.memberRepository = memberRepository;
+        this.encoder = encoder;
     }
 
     @BeforeEach
@@ -85,7 +88,7 @@ class MemberServiceTest {
         // given
         Member savedMember = memberRepository.save(Member.builder()
                 .account("colabear754")
-                .password("1234")
+                .password(encoder.encode("1234"))
                 .build());
         // when
         MemberUpdateRequest request = new MemberUpdateRequest("1234", "5678", "콜라곰", 27);
@@ -95,6 +98,6 @@ class MemberServiceTest {
         assertThat(result.name()).isEqualTo("콜라곰");
         assertThat(result.age()).isEqualTo(27);
         Member member = memberRepository.findAll().get(0);
-        assertThat(member.getPassword()).isEqualTo("5678");
+        assertThat(encoder.matches("5678", member.getPassword())).isEqualTo(true);
     }
 }
