@@ -2,6 +2,7 @@ package com.colabear754.authentication_example_java.controller;
 
 import com.colabear754.authentication_example_java.dto.ApiResponse;
 import com.colabear754.authentication_example_java.dto.member.request.MemberUpdateRequest;
+import com.colabear754.authentication_example_java.security.UserAuthorize;
 import com.colabear754.authentication_example_java.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @Tag(name = "로그인 후 사용할 수 있는 API")
 @RequiredArgsConstructor
+@UserAuthorize
 @RestController
 @RequestMapping("/member")
 public class MemberController {

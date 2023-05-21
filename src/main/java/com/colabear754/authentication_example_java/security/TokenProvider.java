@@ -39,4 +39,13 @@ public class TokenProvider {
                 .setExpiration(Date.from(Instant.now().plus(expirationHours, ChronoUnit.HOURS)))
                 .compact();
     }
+
+    public String validateTokenAndGetSubject(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey.getBytes())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
 }
