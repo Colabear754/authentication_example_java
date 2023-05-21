@@ -7,6 +7,8 @@ import com.colabear754.authentication_example_java.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,19 +23,19 @@ public class MemberController {
 
     @Operation(summary = "회원 정보 조회")
     @GetMapping
-    public ApiResponse getMemberInfo(String id) {
-        return ApiResponse.success(memberService.getMemberInfo(UUID.fromString(id)));
+    public ApiResponse getMemberInfo(@AuthenticationPrincipal User user) {
+        return ApiResponse.success(memberService.getMemberInfo(UUID.fromString(user.getUsername())));
     }
 
     @Operation(summary = "회원 탈퇴")
     @DeleteMapping
-    public ApiResponse deleteMember(String id) {
-        return ApiResponse.success(memberService.deleteMember(UUID.fromString(id)));
+    public ApiResponse deleteMember(@AuthenticationPrincipal User user) {
+        return ApiResponse.success(memberService.deleteMember(UUID.fromString(user.getUsername())));
     }
 
     @Operation(summary = "회원 정보 수정")
     @PutMapping
-    public ApiResponse updateMember(String id, @RequestBody MemberUpdateRequest request) {
-        return ApiResponse.success(memberService.updateMember(UUID.fromString(id), request));
+    public ApiResponse updateMember(@AuthenticationPrincipal User user, @RequestBody MemberUpdateRequest request) {
+        return ApiResponse.success(memberService.updateMember(UUID.fromString(user.getUsername()), request));
     }
 }
