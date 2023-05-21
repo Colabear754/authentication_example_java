@@ -15,6 +15,9 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  security:
+    user:
+      password: 1
 
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
