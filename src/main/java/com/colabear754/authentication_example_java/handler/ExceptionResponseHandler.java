@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class ExceptionResponseHandler {
     @ExceptionHandler({IllegalArgumentException.class, NoSuchElementException.class})
-    public ResponseEntity<ApiResponse> handleIllegalArgumentException(Exception e) {
+    public ResponseEntity<ApiResponse> handleCommonException(Exception e) {
         return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
     }
 
@@ -22,7 +22,7 @@ public class ExceptionResponseHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> handleException() {
+    public ResponseEntity<ApiResponse> handleUnexpectedException() {
         return ResponseEntity.internalServerError().body(ApiResponse.error("서버에 문제가 발생했습니다."));
     }
 }
