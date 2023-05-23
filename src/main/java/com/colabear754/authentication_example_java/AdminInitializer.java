@@ -9,8 +9,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @RequiredArgsConstructor
 @Component
 public class AdminInitializer implements ApplicationRunner {
@@ -24,7 +22,6 @@ public class AdminInitializer implements ApplicationRunner {
                 .password(encoder.encode("admin"))
                 .name("관리자")
                 .type(MemberType.ADMIN)
-                .createdAt(LocalDateTime.now())
                 .build());
     }
 }
