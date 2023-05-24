@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationEntryPoint entryPoint;
     @Value("${security.allowed-uris}")
     private String[] allowedUris;
 
@@ -33,6 +35,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
+                .exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint))
                 .build();
     }
 
