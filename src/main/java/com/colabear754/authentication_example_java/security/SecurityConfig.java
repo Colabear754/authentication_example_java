@@ -1,6 +1,7 @@
 package com.colabear754.authentication_example_java.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -16,6 +17,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Value("${security.allowed-uris}")
+    private String[] allowedUris;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -23,7 +26,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .headers(headers -> headers.frameOptions().sameOrigin())
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/sign-in", "/sign-up").permitAll()
+                        request.requestMatchers(allowedUris).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
