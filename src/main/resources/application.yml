@@ -32,6 +32,3 @@ springdoc:
   api-docs:
     groups:
       enabled: true
-
-security:
-  allowed-uris: /sign-up, /sign-in
